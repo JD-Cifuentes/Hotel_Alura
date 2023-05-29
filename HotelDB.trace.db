@@ -1,0 +1,4 @@
+2023-05-28 16:57:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * FROM RESERVES GUESTS [*]RESERVES"
+Syntax error in SQL statement "SELECT * FROM RESERVES GUESTS [*]RESERVES"; SQL statement:
+SELECT * FROM RESERVES GUESTS RESERVES [42000-214]

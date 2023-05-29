@@ -1,7 +1,8 @@
 package com.hotel_alura.models;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.Clock;
+import java.time.LocalDate;
 
 @SuppressWarnings("all")
 @Entity
@@ -10,26 +11,50 @@ public class Reserve {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    private Date checkIn;
-    private Date checkOut;
+    private LocalDate registerDate;
+    private LocalDate checkIn;
+    private LocalDate checkOut;
     private double price;
 
     @Enumerated(EnumType.STRING)
     private PaymentMethods paymentMethod;
     @ManyToOne(optional = false)
-    private Guest guests;
+    @JoinColumn(name = "guest_id")
+    private Guest guest;
 
 
     public Reserve() {
     }
 
-
-
-    public Guest getGuests() {
-        return guests;
+    public Reserve(LocalDate checkIn, LocalDate checkOut, double price, PaymentMethods paymentMethod) {
+        this.registerDate = LocalDate.now(Clock.systemUTC());
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+        this.price = price;
+        this.paymentMethod = paymentMethod;
     }
 
-    public void setGuests(Guest guests) {
-        this.guests = guests;
+    public void setCheckIn(LocalDate checkIn) {
+        this.checkIn = checkIn;
+    }
+
+    public void setCheckOut(LocalDate checkOut) {
+        this.checkOut = checkOut;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setPaymentMethod(PaymentMethods paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public void setGuest(Guest guest) {
+        this.guest = guest;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

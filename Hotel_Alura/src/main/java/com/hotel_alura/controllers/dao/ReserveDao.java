@@ -15,22 +15,15 @@ public class ReserveDao {
         this.entityManager = entityManager;
     }
 
-    public void create(Reserve newReserve){
-        this.entityManager.persist(newReserve);
-    }
-
     public List<Reserve> readByGuest(Guest guestReserves){
-        String jpql =" SELECT R FROM Reserve AS R WHERE R.guests=:guestReserves ";
+        String jpql =" SELECT R FROM Reserve AS R WHERE R.guest=:guestReserves ";
         return entityManager.createQuery(jpql,Reserve.class).setParameter("guestReserves", guestReserves).getResultList();
     }
 
-    public void update(Reserve reserve){
-        this.entityManager.merge(reserve);
-    }
+    public void deleteReserve(long reserveId){
+        String jpql =" DELETE FROM Reserve WHERE id =: reserveId ";
+        entityManager.createQuery(jpql).setParameter("reserveId", reserveId).executeUpdate();
 
-    public void delete(Reserve reserve){
-        reserve = this.entityManager.merge(reserve);
-        this.entityManager.remove(reserve);
     }
 
 }

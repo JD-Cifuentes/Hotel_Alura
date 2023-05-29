@@ -7,13 +7,13 @@
   <persistence-unit name="HotelAluraDB" transaction-type="RESOURCE_LOCAL">
     <properties>
       <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-      <property name="javax.persistence.jdbc.url" value="jdbc:h2:C:\Users\juan-\OneDrive\ONE\Tercera etapa java + Springboot\4 java_y_JPA-consultas avanzadas_rendiemiento_y_modelos_complejos\tienda\jpa-DB"/> <!--e cambia la direccion de la memoria a una local-->
+      <property name="javax.persistence.jdbc.url" value="jdbc:h2:./HotelDB"/>
       <property name="javax.persistence.jdbc.user" value="hotel"/>
       <property name="javax.persistence.jdbc.password" value="1234"/>
 
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>
-      <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
 
     </properties>

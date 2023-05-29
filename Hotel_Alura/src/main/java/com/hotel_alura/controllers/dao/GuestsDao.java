@@ -25,11 +25,9 @@ public class GuestsDao {
         this.entityManager.merge(guest);
     }
 
-    public void delete(Guest guest){
+    public void deleteGuest(Guest guest){
         guest = this.entityManager.merge(guest);
         this.entityManager.remove(guest);
     }
-
-
 
 }

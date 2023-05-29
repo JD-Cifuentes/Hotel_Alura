@@ -6,7 +6,7 @@ import javax.persistence.Persistence;
 
 public class JPAutils {
 
-    private static EntityManagerFactory FACTORY = Persistence.createEntityManagerFactory("hotel");
+    private static EntityManagerFactory FACTORY = Persistence.createEntityManagerFactory("HotelAluraDB");
     public static EntityManager getEntityManager() {
         return FACTORY.createEntityManager();
     }
