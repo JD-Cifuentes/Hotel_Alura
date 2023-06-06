@@ -1,6 +1,6 @@
 package com.hotel_alura.testing;
 
-import com.hotel_alura.controllers.dao.GuestsDao;
+import com.hotel_alura.models.dao.GuestsDao;
 import com.hotel_alura.models.Guest;
 import utils.JPAutils;
 
@@ -17,7 +17,7 @@ public class DeletingGuest {
 
         entityManager.getTransaction().begin();
 
-        guestToSearch = guestsDao.readByDocument(125344L);
+        guestToSearch = guestsDao.readGuestByDocument(125344L);
         guestsDao.deleteGuest(guestToSearch);
 
         entityManager.getTransaction().commit();

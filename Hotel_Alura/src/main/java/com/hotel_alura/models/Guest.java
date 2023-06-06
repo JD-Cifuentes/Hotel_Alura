@@ -8,12 +8,7 @@ import java.util.List;
 @SuppressWarnings("all")
 @Entity
 @Table(name="guests")
-/*@NamedQuery(name = "Producto.consultaDePrecio",
-        query = "SELECT G.precio FROM Guest AS G WHERE G.nombre=:nombre" )*/
 public class Guest {
-
-
-
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
@@ -40,9 +35,11 @@ public class Guest {
         this.telephoneNum = telephoneNum;
     }
 
-    public long getId() {
-        return id;
+    @Override
+    public String toString() {
+        return this.name;
     }
+
 
     public void setName(String name) {
         this.name = name;
@@ -68,14 +65,37 @@ public class Guest {
         this.reserves.add(newReserve);
     }
 
+
+
+    public long getId() {
+        return id;
+    }
+
+    public long getDocument() {
+        return document;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+    public String getNationality() {
+        return nationality;
+    }
+    public long getTelephoneNum() {
+        return telephoneNum;
+    }
     public List<Reserve> getReservesList() {
         return this.reserves;
     }
-
     public Reserve getReserve(long reserveId){
         Reserve reserveFound = null;
         for (Reserve reserve:
-             this.reserves) {
+                this.reserves) {
             if (reserve.getId() == reserveId){
                 reserveFound = reserve;
                 break;

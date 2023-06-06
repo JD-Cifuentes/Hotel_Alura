@@ -1,5 +1,7 @@
 package com.hotel_alura.models;
 
+import com.hotel_alura.models.enums.PaymentMethods;
+
 import javax.persistence.*;
 import java.time.Clock;
 import java.time.LocalDate;
@@ -34,6 +36,11 @@ public class Reserve {
         this.paymentMethod = paymentMethod;
     }
 
+    @Override
+    public String toString() {
+        return this.registerDate.toString();
+    }
+
     public void setCheckIn(LocalDate checkIn) {
         this.checkIn = checkIn;
     }
@@ -56,5 +63,29 @@ public class Reserve {
 
     public Long getId() {
         return id;
+    }
+
+    public LocalDate getRegisterDate() {
+        return registerDate;
+    }
+
+    public LocalDate getCheckIn() {
+        return checkIn;
+    }
+
+    public LocalDate getCheckOut() {
+        return checkOut;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public PaymentMethods getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public Guest getGuest() {
+        return guest;
     }
 }

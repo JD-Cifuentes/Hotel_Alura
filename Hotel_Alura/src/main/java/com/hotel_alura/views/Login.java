@@ -1,6 +1,10 @@
 package com.hotel_alura.views;
 
+import utils.JPAutils;
+
 import java.awt.EventQueue;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -17,6 +21,7 @@ import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.Objects;
 
 public class Login extends JFrame {
 
@@ -33,7 +38,7 @@ public class Login extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-/*
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -46,7 +51,7 @@ public class Login extends JFrame {
 			}
 		});
 	}
-*/
+
 
 	/**
 	 * Create the frame.
@@ -78,7 +83,7 @@ public class Login extends JFrame {
 		JLabel imgHotel = new JLabel("");
 		imgHotel.setBounds(0, 0, 304, 538);
 		panel_1.add(imgHotel);
-		imgHotel.setIcon(new ImageIcon(Login.class.getResource("/imagenes/img-hotel-login-.png")));
+		imgHotel.setIcon(new ImageIcon(Objects.requireNonNull(Login.class.getResource("/imagenes/img-hotel-login-.png"))));
 		
 		JPanel btnexit = new JPanel();
 		btnexit.setBounds(251, 0, 53, 36);
@@ -194,7 +199,7 @@ public class Login extends JFrame {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Login();
+				UserLogin();
 			}
 		});
 		btnLogin.setBackground(SystemColor.textHighlight);
@@ -236,19 +241,30 @@ public class Login extends JFrame {
 		header.setLayout(null);
 	}
 	
-	private void Login() {
-		 String Usuario= " ";//todo verificar valores luego
-	     String Contraseña=" ";
+	private void UserLogin() {
+		 String login;
+	     String password;
+		 EntityManager entityManager = JPAutils.getEntityManager();
+		 try{
+			 login = entityManager.createQuery(" SELECT U.login FROM HotelUser AS U WHERE U.login = : login ", String.class)
+					 .setParameter("login", txtUsuario.getText()).getSingleResult();
 
-	        String contrase=new String (txtContrasena.getPassword());
+			 if(!login.isEmpty()) {
+				 String contrase = new String(txtContrasena.getPassword());
+				 password = entityManager.createQuery(" SELECT U.pass FROM HotelUser AS U WHERE U.login = : login ", String.class)
+						 .setParameter("login", login).getSingleResult();
+				 if (password.equals(contrase)) {
+					 MenuUsuario menu = new MenuUsuario();
+					 menu.setVisible(true);
+					 dispose();
+				 }else {
+					 throw new NoResultException();
+				 }
+			 }
+		 }catch (NoResultException e){
+			 JOptionPane.showMessageDialog(this, "Nombre de usuario o contraseña no válidos");
+		 }
 
-	        if(txtUsuario.getText().equals(Usuario) && contrase.equals(Contraseña)){
-	            MenuUsuario menu = new MenuUsuario();
-	            menu.setVisible(true);
-	            dispose();	 
-	        }else {
-	            JOptionPane.showMessageDialog(this, "Usuario o Contraseña no válidos");
-	        }
 	} 
 	 private void headerMousePressed(MouseEvent evt) {
 	        xMouse = evt.getX();

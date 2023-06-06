@@ -1,4 +1,4 @@
-package com.hotel_alura.controllers.dao;
+package com.hotel_alura.models.dao;
 
 import com.hotel_alura.models.Guest;
 
@@ -16,7 +16,7 @@ public class GuestsDao {
         this.entityManager.persist(newGuest);
     }
 
-    public Guest readByDocument(long guestDocument){
+    public Guest readGuestByDocument(long guestDocument){
         String jpql =" SELECT G FROM Guest AS G WHERE G.document=:guestDocument ";
         return entityManager.createQuery(jpql,Guest.class).setParameter("guestDocument", guestDocument).getSingleResult();
     }

@@ -1,10 +1,7 @@
 package com.hotel_alura.testing;
 
-import com.hotel_alura.controllers.dao.GuestsDao;
-import com.hotel_alura.controllers.dao.ReserveDao;
+import com.hotel_alura.models.dao.GuestsDao;
 import com.hotel_alura.models.Guest;
-import com.hotel_alura.models.PaymentMethods;
-import com.hotel_alura.models.Reserve;
 import utils.JPAutils;
 
 import javax.persistence.EntityManager;
@@ -20,7 +17,7 @@ public class SearchingAndUpdatingGuest {
 
         entityManager.getTransaction().begin();
 
-        guestToSearch = guestsDao.readByDocument(125344L);
+        guestToSearch = guestsDao.readGuestByDocument(125344L);
         guestToSearch.setBirthDate(LocalDate.of(2001,12,25));
         guestsDao.update(guestToSearch);
 

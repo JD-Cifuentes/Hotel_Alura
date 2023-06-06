@@ -1,25 +1,21 @@
 package com.hotel_alura.views;
 
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import com.hotel_alura.controllers.RecordSelectors;
+import com.hotel_alura.models.enums.SearchOptions;
+
+import java.awt.*;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ImageIcon;
-import java.awt.Color;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JTabbedPane;
-import java.awt.Toolkit;
-import javax.swing.SwingConstants;
-import javax.swing.JSeparator;
-import javax.swing.ListSelectionModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings("serial")
 public class Busqueda extends JFrame {
@@ -75,7 +71,7 @@ public class Busqueda extends JFrame {
 		JLabel lblNewLabel_4 = new JLabel("SISTEMA DE BÚSQUEDA");
 		lblNewLabel_4.setForeground(new Color(12, 138, 199));
 		lblNewLabel_4.setFont(new Font("Roboto Black", Font.BOLD, 24));
-		lblNewLabel_4.setBounds(331, 62, 280, 42);
+		lblNewLabel_4.setBounds(331, 62, 300, 42);
 		contentPane.add(lblNewLabel_4);
 		
 		JTabbedPane panel = new JTabbedPane(JTabbedPane.TOP);
@@ -90,34 +86,47 @@ public class Busqueda extends JFrame {
 		tbReservas = new JTable();
 		tbReservas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbReservas.setFont(new Font("Roboto", Font.PLAIN, 16));
-		modelo = (DefaultTableModel) tbReservas.getModel();
-		modelo.addColumn("Numero de Reserva");
-		modelo.addColumn("Fecha Check In");
-		modelo.addColumn("Fecha Check Out");
+		modelo = new DefaultTableModel(){
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return column != 0 && column != 1;
+			}
+		};
+		modelo.addColumn("Número de reserva");
+		modelo.addColumn("Fecha de registro");
+		modelo.addColumn("Fecha Check-In");
+		modelo.addColumn("Fecha Check-Out");
 		modelo.addColumn("Valor");
-		modelo.addColumn("Forma de Pago");
+		modelo.addColumn("Forma de pago");
+		tbReservas.setModel(modelo);
 		JScrollPane scroll_table = new JScrollPane(tbReservas);
-		panel.addTab("Reservas", new ImageIcon(Busqueda.class.getResource("/imagenes/reservado.png")), scroll_table, null);
+		panel.addTab(SearchOptions.RESERVE.toString(), new ImageIcon(Objects.requireNonNull(Busqueda.class.getResource("/imagenes/reservado.png"))), scroll_table, null);
 		scroll_table.setVisible(true);
-		
-		
+
+
 		tbHuespedes = new JTable();
 		tbHuespedes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbHuespedes.setFont(new Font("Roboto", Font.PLAIN, 16));
-		modeloHuesped = (DefaultTableModel) tbHuespedes.getModel();
-		modeloHuesped.addColumn("Número de Huesped");
+		modeloHuesped = new DefaultTableModel(){
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return column != 0 && column != 6;
+			}
+		};
+		modeloHuesped.addColumn("Documento");
 		modeloHuesped.addColumn("Nombre");
 		modeloHuesped.addColumn("Apellido");
 		modeloHuesped.addColumn("Fecha de Nacimiento");
 		modeloHuesped.addColumn("Nacionalidad");
 		modeloHuesped.addColumn("Telefono");
-		modeloHuesped.addColumn("Número de Reserva");
+		modeloHuesped.addColumn("Número de reserva");
+		tbHuespedes.setModel(modeloHuesped);
 		JScrollPane scroll_tableHuespedes = new JScrollPane(tbHuespedes);
-		panel.addTab("Huéspedes", new ImageIcon(Busqueda.class.getResource("/imagenes/pessoas.png")), scroll_tableHuespedes, null);
+		panel.addTab(SearchOptions.GUEST.toString(), new ImageIcon(Objects.requireNonNull(Busqueda.class.getResource("/imagenes/pessoas.png"))), scroll_tableHuespedes, null);
 		scroll_tableHuespedes.setVisible(true);
-		
+
 		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon(Busqueda.class.getResource("/imagenes/Ha-100px.png")));
+		lblNewLabel_2.setIcon(new ImageIcon(Objects.requireNonNull(Busqueda.class.getResource("/imagenes/Ha-100px.png"))));
 		lblNewLabel_2.setBounds(56, 51, 104, 107);
 		contentPane.add(lblNewLabel_2);
 		
@@ -207,27 +216,98 @@ public class Busqueda extends JFrame {
 		separator_1_2.setBounds(539, 159, 193, 2);
 		contentPane.add(separator_1_2);
 		
-		JPanel btnbuscar = new JPanel();
-		btnbuscar.addMouseListener(new MouseAdapter() {
+		JPanel btnBuscar = new JPanel();
+		btnBuscar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				try{
+					List<String> readQuery = RecordSelectors
+							.searchSelector(
+									panel.getTitleAt(panel.getSelectedIndex()),
+									Long.parseLong(txtBuscar.getText())
+							);
 
+					if(readQuery.isEmpty()){
+						throw new NullPointerException();
+					}
+
+					JTable selectedTable = getSelectedTable((JScrollPane) panel.getSelectedComponent());
+					DefaultTableModel defaultModel = (DefaultTableModel) selectedTable.getModel();
+					Object[] dataRegister = new Object[defaultModel.getColumnCount()];
+
+
+					defaultModel.setRowCount(0);
+
+					for (String queryRow:
+						 readQuery) {
+						String[] queryRowSplited = queryRow.split("\n");
+
+						System.arraycopy(queryRowSplited, 0, dataRegister, 0, dataRegister.length);
+						defaultModel.addRow(dataRegister);
+					}
+
+				}catch (Exception exception){
+					JOptionPane.showMessageDialog(
+							null,
+							"Verifique los valores ingresados para la consulta e intente nuevamente",
+							"La consulta no fue exitosa",
+							JOptionPane.ERROR_MESSAGE);
+					System.out.println(exception);
+				}
 			}
 		});
-		btnbuscar.setLayout(null);
-		btnbuscar.setBackground(new Color(12, 138, 199));
-		btnbuscar.setBounds(748, 125, 122, 35);
-		btnbuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-		contentPane.add(btnbuscar);
+		btnBuscar.setLayout(null);
+		btnBuscar.setBackground(new Color(12, 138, 199));
+		btnBuscar.setBounds(748, 125, 122, 35);
+		btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+		contentPane.add(btnBuscar);
 		
 		JLabel lblBuscar = new JLabel("BUSCAR");
 		lblBuscar.setBounds(0, 0, 122, 35);
-		btnbuscar.add(lblBuscar);
+		btnBuscar.add(lblBuscar);
 		lblBuscar.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBuscar.setForeground(Color.WHITE);
 		lblBuscar.setFont(new Font("Roboto", Font.PLAIN, 18));
 		
 		JPanel btnEditar = new JPanel();
+		btnEditar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				JTable selectedTable = getSelectedTable((JScrollPane) panel.getSelectedComponent());
+				int selectedRowIndex = selectedTable.getSelectedRow();
+
+				if (selectedRowIndex != -1){
+					System.out.println("edit\n" + selectedTable.getValueAt(selectedRowIndex, 0).toString());
+
+					//todo copiar y crear clase que administre los datos
+
+					String refForSearch = selectedTable.getValueAt(selectedRowIndex, 0).toString();
+					StringBuilder dataToUpdate = new StringBuilder();
+
+					for (int i = 0; i < selectedTable.getColumnCount(); i++) {
+
+						String columnNameAtIndex = selectedTable.getColumnName(i);
+
+						if (!(columnNameAtIndex.equals("Número de reserva") ||
+								columnNameAtIndex.equals("Fecha de registro") ||
+								columnNameAtIndex.equals("Documento"))
+						) {
+							dataToUpdate.append(selectedTable.getValueAt(selectedRowIndex, i).toString());
+						}
+					}
+					RecordSelectors.editSelector(panel.getTitleAt(panel.getSelectedIndex()), dataToUpdate);
+
+
+				}else {
+					JOptionPane.showMessageDialog(
+							null,
+							"No has seleccionado una fila, intenta nuevamente",
+							"Ninguna fila seleccionada",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
 		btnEditar.setLayout(null);
 		btnEditar.setBackground(new Color(12, 138, 199));
 		btnEditar.setBounds(635, 508, 122, 35);
@@ -242,6 +322,12 @@ public class Busqueda extends JFrame {
 		btnEditar.add(lblEditar);
 		
 		JPanel btnEliminar = new JPanel();
+		btnEliminar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("eliminar");
+			}
+		});
 		btnEliminar.setLayout(null);
 		btnEliminar.setBackground(new Color(12, 138, 199));
 		btnEliminar.setBounds(767, 508, 122, 35);
@@ -256,16 +342,21 @@ public class Busqueda extends JFrame {
 		btnEliminar.add(lblEliminar);
 		setResizable(false);
 	}
+
 	
 //Código que permite mover la ventana por la pantalla según la posición de "x" y "y"
 	 private void headerMousePressed(MouseEvent evt) {
 	        xMouse = evt.getX();
 	        yMouse = evt.getY();
-	    }
+	}
+	private void headerMouseDragged(MouseEvent evt) {
+		int x = evt.getXOnScreen();
+		int y = evt.getYOnScreen();
+		this.setLocation(x - xMouse, y - yMouse);
+	}
 
-	    private void headerMouseDragged(MouseEvent evt) {
-	        int x = evt.getXOnScreen();
-	        int y = evt.getYOnScreen();
-	        this.setLocation(x - xMouse, y - yMouse);
-}
+	private JTable getSelectedTable (JScrollPane selectedJScrollPane){
+		Component view = selectedJScrollPane.getViewport().getView();
+		return (JTable) view;
+	}
 }

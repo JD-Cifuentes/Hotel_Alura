@@ -1,9 +1,9 @@
 package com.hotel_alura.testing;
 
-import com.hotel_alura.controllers.dao.GuestsDao;
-import com.hotel_alura.controllers.dao.ReserveDao;
+import com.hotel_alura.models.dao.GuestsDao;
+import com.hotel_alura.models.dao.ReserveDao;
 import com.hotel_alura.models.Guest;
-import com.hotel_alura.models.PaymentMethods;
+import com.hotel_alura.models.enums.PaymentMethods;
 import com.hotel_alura.models.Reserve;
 import utils.JPAutils;
 
@@ -15,7 +15,7 @@ public class CreatingAndAddingAReserve {
 
         Guest guestToSearch = new Guest();
 
-        LocalDate checkInDate = LocalDate.of(2023,12,25);
+        LocalDate checkInDate = LocalDate.of(2021,6,2);
         Reserve newReserve = new Reserve(checkInDate, checkInDate.plusDays(4),4*10000, PaymentMethods.CASH);
         EntityManager entityManager = JPAutils.getEntityManager();
 
@@ -26,7 +26,7 @@ public class CreatingAndAddingAReserve {
 
         entityManager.getTransaction().begin();
 
-        guestToSearch = guestsDao.readByDocument(125344L);
+        guestToSearch = guestsDao.readGuestByDocument(125344L);
         newReserve.setGuest(guestToSearch);
         guestToSearch.addReserve(newReserve);
         guestsDao.update(guestToSearch);
