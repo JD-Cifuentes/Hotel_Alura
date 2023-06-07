@@ -7,41 +7,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecordSelectors {
-    public static List<String> searchSelector(String enumValue, Long searchParam){
-        List<String> readQueryResult = new ArrayList<>();
-        try {
-            for (SearchOptions option : SearchOptions.values()) {
-                Field stringValueField = SearchOptions.class.getDeclaredField("tabOption");
-                stringValueField.setAccessible(true);
+    public static List<String> searchSelector(String enumValue, Long searchParam) throws NoSuchFieldException, IllegalAccessException{
+        List<String> readQueryResult;
+        for (SearchOptions option : SearchOptions.values()) {
+            Field stringValueField = SearchOptions.class.getDeclaredField("tabOption");
+            stringValueField.setAccessible(true);
 
-                String enumStringValue = (String) stringValueField.get(option);
+            String enumStringValue = (String) stringValueField.get(option);
 
-                if (enumValue.equals(enumStringValue)) {
-                    readQueryResult = option.searching(searchParam);
-                }
+            if (enumValue.equals(enumStringValue)) {
+                readQueryResult = option.searching(searchParam);
+                return readQueryResult;
             }
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            System.out.println(e.getMessage());
         }
 
-        return readQueryResult;
+        throw new NoSuchFieldException();
     }
 
-    public static void editSelector(String enumValue, StringBuilder dataToUpdate){
-        try {
-            for (SearchOptions option : SearchOptions.values()) {
-                Field stringValueField = SearchOptions.class.getDeclaredField("tabOption");
-                stringValueField.setAccessible(true);
+    public static void editSelector(String enumValue, List<String> dataToUpdate, String refForSearch) throws NoSuchFieldException, IllegalAccessException{
 
-                String enumStringValue = (String) stringValueField.get(option);
+        for (SearchOptions option : SearchOptions.values()) {
+            Field stringValueField = SearchOptions.class.getDeclaredField("tabOption");
+            stringValueField.setAccessible(true);
 
-                if (enumValue.equals(enumStringValue)) {
-                    //todo implementar la acción que permitirá editar los campos enviados según la tab seleccionada en la UI
-                }
+            String enumStringValue = (String) stringValueField.get(option);
+
+            if (enumValue.equals(enumStringValue)) {
+                option.editing(dataToUpdate, refForSearch);
+            return;
             }
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            System.out.println(e.getMessage());
         }
+
+        throw new NoSuchFieldException();
 
 
     }

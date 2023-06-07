@@ -31,4 +31,8 @@ public class ReserveDao {
 
     }
 
+    public void update(Reserve reserve){
+        this.entityManager.merge(reserve);
+    }
+
 }

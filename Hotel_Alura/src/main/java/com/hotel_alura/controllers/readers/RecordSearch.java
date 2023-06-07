@@ -12,7 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class RecordSearch {
-    public List<String> SearchGuestByDocument(long searchDocumentParam){
+    public List<String> searchGuestByDocument(long searchDocumentParam){
         Guest guest = new Guest();
         List<String> guestReservesRegister = new ArrayList<>();
         EntityManager entityManager = JPAutils.getEntityManager();
@@ -44,7 +44,7 @@ public class RecordSearch {
         return guestReservesRegister;
     }
 
-    public List<String> SearchReserveByReserveId(long searchIdParam){
+    public List<String> searchReserveByReserveId(long searchIdParam){
         Reserve reserve = new Reserve();
         List<String> reservesRegister = new ArrayList<>();
         EntityManager entityManager = JPAutils.getEntityManager();

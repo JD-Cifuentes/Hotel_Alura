@@ -56,6 +56,9 @@ public class Reserve {
     public void setPaymentMethod(PaymentMethods paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
+    public void setPaymentMethod(String paymentOption) throws NoSuchFieldException, IllegalAccessException{
+        this.paymentMethod = PaymentMethods.getPaymentMethodByPaymentOption(paymentOption);
+    }
 
     public void setGuest(Guest guest) {
         this.guest = guest;

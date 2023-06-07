@@ -7,13 +7,10 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -220,42 +217,10 @@ public class Busqueda extends JFrame {
 		btnBuscar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				try{
-					List<String> readQuery = RecordSelectors
-							.searchSelector(
-									panel.getTitleAt(panel.getSelectedIndex()),
-									Long.parseLong(txtBuscar.getText())
-							);
-
-					if(readQuery.isEmpty()){
-						throw new NullPointerException();
-					}
-
-					JTable selectedTable = getSelectedTable((JScrollPane) panel.getSelectedComponent());
-					DefaultTableModel defaultModel = (DefaultTableModel) selectedTable.getModel();
-					Object[] dataRegister = new Object[defaultModel.getColumnCount()];
-
-
-					defaultModel.setRowCount(0);
-
-					for (String queryRow:
-						 readQuery) {
-						String[] queryRowSplited = queryRow.split("\n");
-
-						System.arraycopy(queryRowSplited, 0, dataRegister, 0, dataRegister.length);
-						defaultModel.addRow(dataRegister);
-					}
-
-				}catch (Exception exception){
-					JOptionPane.showMessageDialog(
-							null,
-							"Verifique los valores ingresados para la consulta e intente nuevamente",
-							"La consulta no fue exitosa",
-							JOptionPane.ERROR_MESSAGE);
-					System.out.println(exception);
-				}
+				searchAndRenderTable(panel);
 			}
 		});
+
 		btnBuscar.setLayout(null);
 		btnBuscar.setBackground(new Color(12, 138, 199));
 		btnBuscar.setBounds(748, 125, 122, 35);
@@ -278,12 +243,8 @@ public class Busqueda extends JFrame {
 				int selectedRowIndex = selectedTable.getSelectedRow();
 
 				if (selectedRowIndex != -1){
-					System.out.println("edit\n" + selectedTable.getValueAt(selectedRowIndex, 0).toString());
-
-					//todo copiar y crear clase que administre los datos
-
 					String refForSearch = selectedTable.getValueAt(selectedRowIndex, 0).toString();
-					StringBuilder dataToUpdate = new StringBuilder();
+					List<String> dataToUpdate = new ArrayList<>();
 
 					for (int i = 0; i < selectedTable.getColumnCount(); i++) {
 
@@ -293,11 +254,21 @@ public class Busqueda extends JFrame {
 								columnNameAtIndex.equals("Fecha de registro") ||
 								columnNameAtIndex.equals("Documento"))
 						) {
-							dataToUpdate.append(selectedTable.getValueAt(selectedRowIndex, i).toString());
+							dataToUpdate.add(selectedTable.getValueAt(selectedRowIndex, i).toString());
 						}
 					}
-					RecordSelectors.editSelector(panel.getTitleAt(panel.getSelectedIndex()), dataToUpdate);
+					try{
+						RecordSelectors.editSelector(panel.getTitleAt(panel.getSelectedIndex()), dataToUpdate, refForSearch);
 
+					}catch (Exception exception){
+						JOptionPane.showMessageDialog(
+								null,
+								"No se lograrón actualizar los datos, verifica que la información agreagada se encuentre en un formato válido.",
+								"ups! Ha ocurrido un error",
+								JOptionPane.ERROR_MESSAGE);
+					}
+
+					searchAndRenderTable(panel);
 
 				}else {
 					JOptionPane.showMessageDialog(
@@ -358,5 +329,42 @@ public class Busqueda extends JFrame {
 	private JTable getSelectedTable (JScrollPane selectedJScrollPane){
 		Component view = selectedJScrollPane.getViewport().getView();
 		return (JTable) view;
+	}
+
+	private void searchAndRenderTable(JTabbedPane panel){
+		try{
+			List<String> readQuery = RecordSelectors
+					.searchSelector(
+							panel.getTitleAt(panel.getSelectedIndex()),
+							Long.parseLong(txtBuscar.getText())
+					);
+
+			if(readQuery.isEmpty()){
+				throw new NullPointerException();
+			}
+
+			JTable selectedTable = getSelectedTable((JScrollPane) panel.getSelectedComponent());
+			DefaultTableModel defaultModel = (DefaultTableModel) selectedTable.getModel();
+			Object[] dataRegister = new Object[defaultModel.getColumnCount()];
+
+
+			defaultModel.setRowCount(0);
+
+			for (String queryRow:
+					readQuery) {
+				String[] queryRowSplited = queryRow.split("\n");
+
+				System.arraycopy(queryRowSplited, 0, dataRegister, 0, dataRegister.length);
+				defaultModel.addRow(dataRegister);
+			}
+
+		}catch (Exception exception){
+			JOptionPane.showMessageDialog(
+					null,
+					"Verifique los valores ingresados para la consulta e intente nuevamente",
+					"La consulta no fue exitosa",
+					JOptionPane.ERROR_MESSAGE);
+			System.out.println(exception);
+		}
 	}
 }
