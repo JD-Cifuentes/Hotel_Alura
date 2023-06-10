@@ -1,6 +1,6 @@
 package com.hotel_alura.views;
 
-import com.hotel_alura.controllers.RecordSelectors;
+import com.hotel_alura.controllers.RecordCRUD.RecordSelectors;
 import com.hotel_alura.models.enums.SearchOptions;
 
 import java.awt.*;
@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -86,7 +87,7 @@ public class Busqueda extends JFrame {
 		modelo = new DefaultTableModel(){
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				return column != 0 && column != 1;
+				return column != 0 && column != 1 && column != 4;
 			}
 		};
 		modelo.addColumn("Número de reserva");
@@ -185,12 +186,12 @@ public class Busqueda extends JFrame {
 				dispose();
 			}
 			@Override
-			public void mouseEntered(MouseEvent e) { //Al usuario pasar el mouse por el botón este cambiará de color
+			public void mouseEntered(MouseEvent e) {
 				btnexit.setBackground(Color.red);
 				labelExit.setForeground(Color.white);
 			}			
 			@Override
-			public void mouseExited(MouseEvent e) { //Al usuario quitar el mouse por el botón este volverá al estado original
+			public void mouseExited(MouseEvent e) {
 				 btnexit.setBackground(Color.white);
 			     labelExit.setForeground(Color.black);
 			}
@@ -206,7 +207,70 @@ public class Busqueda extends JFrame {
 		labelExit.setFont(new Font("Roboto", Font.PLAIN, 18));
 		labelExit.setBounds(0, 0, 53, 36);
 		btnexit.add(labelExit);
-		
+
+		JPanel btnAyudaFormato = new JPanel() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				Graphics2D g2d = (Graphics2D) g.create();
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				Shape shape = new Ellipse2D.Double(0, 0, getWidth(), getHeight());
+				g2d.setColor(getBackground());
+				g2d.fill(shape);
+				g2d.dispose();
+			}
+		};
+
+
+		btnAyudaFormato.setLayout(null);
+		btnAyudaFormato.setBackground(new Color(12, 138, 199));
+		btnAyudaFormato.setBounds(480, 125, 36, 36);
+		btnAyudaFormato.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+		contentPane.add(btnAyudaFormato);
+
+		JLabel lblAyudaFormato = new JLabel("");
+		lblAyudaFormato.setIcon(new ImageIcon(Objects.requireNonNull(Busqueda.class.getResource("/imagenes/question-sign-in-circles.png"))));
+		lblAyudaFormato.setBounds(1, 1, 34, 34);
+		btnAyudaFormato.add(lblAyudaFormato);
+
+		JToolTip formatInfo = new JToolTip();
+		formatInfo.setTipText("<html>" +
+				"Formatos admitidos por campo <br>" +
+				"- fechas -> aaaa/mm/dd<br>" +
+				"- valor -> usar punto para decimal<br>" +
+				"- formas de pago: * Efectivo<br>" +
+				"&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;* Tarjeta crédito<br>" +
+				"&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;* Tarjeta débito<br>" +
+				"</html>");
+		formatInfo.setAlignmentY(1);
+		formatInfo.setForeground(Color.BLACK);
+		formatInfo.setBackground(Color.LIGHT_GRAY);
+		formatInfo.setFont(new Font("Roboto", Font.PLAIN, 11));
+		formatInfo.setOpaque(true);
+		formatInfo.setVisible(false);
+		formatInfo.setBounds(0, 0, 200, 100);
+		contentPane.add(formatInfo);
+
+		btnAyudaFormato.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				formatInfo.setVisible(true);
+				formatInfo.setLocation(
+						btnAyudaFormato.getX() - 200,
+						btnAyudaFormato.getY() - 25
+				);
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				formatInfo.setVisible(false);
+			}
+
+		});
+
+		contentPane.add(formatInfo);
+
 		JSeparator separator_1_2 = new JSeparator();
 		separator_1_2.setForeground(new Color(12, 138, 199));
 		separator_1_2.setBackground(new Color(12, 138, 199));
@@ -263,7 +327,7 @@ public class Busqueda extends JFrame {
 					}catch (Exception exception){
 						JOptionPane.showMessageDialog(
 								null,
-								"No se lograrón actualizar los datos, verifica que la información agreagada se encuentre en un formato válido.",
+								"No se lograrón actualizar los datos, verifica \n que la información agreagada se encuentre en un formato válido.",
 								"ups! Ha ocurrido un error",
 								JOptionPane.ERROR_MESSAGE);
 					}
@@ -271,11 +335,7 @@ public class Busqueda extends JFrame {
 					searchAndRenderTable(panel);
 
 				}else {
-					JOptionPane.showMessageDialog(
-							null,
-							"No has seleccionado una fila, intenta nuevamente",
-							"Ninguna fila seleccionada",
-							JOptionPane.WARNING_MESSAGE);
+					noRowSelected();
 				}
 			}
 		});
@@ -296,7 +356,43 @@ public class Busqueda extends JFrame {
 		btnEliminar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("eliminar");
+
+				JTable selectedTable = getSelectedTable((JScrollPane) panel.getSelectedComponent());
+				int selectedRowIndex = selectedTable.getSelectedRow();
+
+				if (selectedRowIndex != -1){
+					String refToDelete = selectedTable.getValueAt(selectedRowIndex, 0).toString();
+
+					try{
+
+						int option = JOptionPane.showConfirmDialog(
+								null,
+								"Confirmar eliminación",
+								"¿Realmente quieres eliminar este registro?",
+								JOptionPane.YES_NO_OPTION);
+
+						if (option == JOptionPane.YES_OPTION){
+							RecordSelectors.deleteSelector(panel.getTitleAt(panel.getSelectedIndex()), refToDelete);
+							DefaultTableModel defaultModel = (DefaultTableModel) selectedTable.getModel();
+							defaultModel.setRowCount(0);
+							JOptionPane.showMessageDialog(
+									null,
+									"Registro eliminado con éxito",
+									"El registro seleccionado \n fue eliminado con éxito",
+									JOptionPane.INFORMATION_MESSAGE);
+						}
+					}catch (Exception exception){
+						JOptionPane.showMessageDialog(
+								null,
+								"No se logró elimnar el registro.",
+								"ups! Ha ocurrido un error",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				}else {
+					noRowSelected();
+				}
+
+
 			}
 		});
 		btnEliminar.setLayout(null);
@@ -314,8 +410,7 @@ public class Busqueda extends JFrame {
 		setResizable(false);
 	}
 
-	
-//Código que permite mover la ventana por la pantalla según la posición de "x" y "y"
+
 	 private void headerMousePressed(MouseEvent evt) {
 	        xMouse = evt.getX();
 	        yMouse = evt.getY();
@@ -329,6 +424,14 @@ public class Busqueda extends JFrame {
 	private JTable getSelectedTable (JScrollPane selectedJScrollPane){
 		Component view = selectedJScrollPane.getViewport().getView();
 		return (JTable) view;
+	}
+
+	private	void noRowSelected(){
+		JOptionPane.showMessageDialog(
+				null,
+				"No has seleccionado una fila,\n intenta nuevamente",
+				"Ninguna fila seleccionada para editar",
+				JOptionPane.WARNING_MESSAGE);
 	}
 
 	private void searchAndRenderTable(JTabbedPane panel){
@@ -361,7 +464,7 @@ public class Busqueda extends JFrame {
 		}catch (Exception exception){
 			JOptionPane.showMessageDialog(
 					null,
-					"Verifique los valores ingresados para la consulta e intente nuevamente",
+					"Verifique los valores ingresados \n para la consulta e intente nuevamente",
 					"La consulta no fue exitosa",
 					JOptionPane.ERROR_MESSAGE);
 			System.out.println(exception);

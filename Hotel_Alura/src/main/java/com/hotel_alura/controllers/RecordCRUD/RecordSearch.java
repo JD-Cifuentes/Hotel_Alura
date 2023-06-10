@@ -1,4 +1,4 @@
-package com.hotel_alura.controllers.readers;
+package com.hotel_alura.controllers.RecordCRUD;
 
 import com.hotel_alura.models.Guest;
 import com.hotel_alura.models.Reserve;
@@ -12,11 +12,15 @@ import java.util.Comparator;
 import java.util.List;
 
 public class RecordSearch {
-    public List<String> searchGuestByDocument(long searchDocumentParam){
+
+
+
+
+    public static List<String> searchGuestByDocument(long searchDocumentParam){
         Guest guest = new Guest();
-        List<String> guestReservesRegister = new ArrayList<>();
         EntityManager entityManager = JPAutils.getEntityManager();
         GuestsDao guestsDao = new GuestsDao(entityManager);
+        List<String> guestReservesRegister = new ArrayList<>();
 
         entityManager.getTransaction().begin();
         try{
@@ -44,20 +48,18 @@ public class RecordSearch {
         return guestReservesRegister;
     }
 
-    public List<String> searchReserveByReserveId(long searchIdParam){
+    public static List<String> searchReserveByReserveId(long searchIdParam){
         Reserve reserve = new Reserve();
-        List<String> reservesRegister = new ArrayList<>();
         EntityManager entityManager = JPAutils.getEntityManager();
         ReserveDao reserveDao = new ReserveDao(entityManager);
+        List<String> reservesRegister = new ArrayList<>();
 
         entityManager.getTransaction().begin();
-
         try{
             reserve = reserveDao.readOneReserveByReserveId(searchIdParam);
         }catch (Exception e){
             System.out.println("reserve wasn't found\n" + e);
         }
-
         entityManager.getTransaction().commit();
 
         if (reserve.getRegisterDate() != null){

@@ -9,16 +9,14 @@ import javax.persistence.EntityManager;
 public class DeletingGuest {
     public static void main(String[] args) {
 
-        Guest guestToSearch = new Guest();
+        Guest guestToSearch;
         EntityManager entityManager = JPAutils.getEntityManager();
         GuestsDao guestsDao = new GuestsDao(entityManager);
-
-
 
         entityManager.getTransaction().begin();
 
         guestToSearch = guestsDao.readGuestByDocument(125344L);
-        guestsDao.deleteGuest(guestToSearch);
+        guestsDao.deleteGuestByDocument(125344L);
 
         entityManager.getTransaction().commit();
 

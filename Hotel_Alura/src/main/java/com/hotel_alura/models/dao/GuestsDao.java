@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 
 public class GuestsDao {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public GuestsDao(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -25,9 +25,10 @@ public class GuestsDao {
         this.entityManager.merge(guest);
     }
 
-    public void deleteGuest(Guest guest){
-        guest = this.entityManager.merge(guest);
-        this.entityManager.remove(guest);
+    public void deleteGuestByDocument(long GuestDoc){
+        String jpql =" DELETE FROM Guest WHERE id =: GuestDoc ";
+        entityManager.createQuery(jpql).setParameter("GuestDoc", GuestDoc).executeUpdate();
+
     }
 
 }

@@ -9,7 +9,7 @@ import java.util.List;
 public class ReserveDao {
 
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public ReserveDao(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -25,7 +25,7 @@ public class ReserveDao {
         return entityManager.createQuery(jpql,Reserve.class).setParameter("reserveId", reserveId).getSingleResult();
     }
 
-    public void deleteReserve(long reserveId){
+    public void deleteReserveById(long reserveId){
         String jpql =" DELETE FROM Reserve WHERE id =: reserveId ";
         entityManager.createQuery(jpql).setParameter("reserveId", reserveId).executeUpdate();
 

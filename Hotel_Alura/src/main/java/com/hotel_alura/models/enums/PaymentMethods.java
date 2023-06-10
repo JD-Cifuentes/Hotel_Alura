@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 public enum PaymentMethods {
 
     CREDIT_CARD("Tarjeta crédito"),
-    DEBIT_CARD("Tarjeta debito"),
+    DEBIT_CARD("Tarjeta débito"),
     CASH("Efectivo");
 
     private final String paymentOption;

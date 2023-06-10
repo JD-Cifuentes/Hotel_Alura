@@ -352,7 +352,7 @@ General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/ju
 	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
 	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
 	at utils.JPAutils.<clinit>(JPAutils.java:9)
-	at com.hotel_alura.controllers.readers.RecordSearch.SearchGuestByDocument(RecordSearch.java:17)
+	at com.hotel_alura.controllers.RecordCRUD.RecordSearch.SearchGuestByDocument(RecordSearch.java:17)
 	at com.hotel_alura.models.enums.SearchOptions$1.searching(SearchOptions.java:14)
 	at com.hotel_alura.models.enums.SearchOptions.searchSelector(SearchOptions.java:48)
 	at com.hotel_alura.views.Busqueda$6.mouseClicked(Busqueda.java:210)

@@ -1,4 +1,4 @@
-package com.hotel_alura.controllers.updates;
+package com.hotel_alura.controllers.RecordCRUD;
 
 import com.hotel_alura.models.Guest;
 import com.hotel_alura.models.Reserve;
@@ -13,12 +13,10 @@ import java.util.List;
 
 public class RecordEdit {
 
-    //todo implementar los métodos que editaran los campos en la base de datos
-    public void updateGuestByDocument(List<String> dataToUpdate, String refForSearch) {
-        Guest guest = new Guest();
+    public static void updateGuestByDocument(List<String> dataToUpdate, String refForSearch) {
+        Guest guest;
         EntityManager entityManager = JPAutils.getEntityManager();
         GuestsDao guestsDao = new GuestsDao(entityManager);
-
         try {
             entityManager.getTransaction().begin();
 
@@ -41,8 +39,8 @@ public class RecordEdit {
         }
     }
 
-    public void updateReserveByReserveId(List<String> dataToUpdate, String refForSearch){
-        Reserve reserve = new Reserve();
+    public static void updateReserveByReserveId(List<String> dataToUpdate, String refForSearch){
+        Reserve reserve;
         EntityManager entityManager = JPAutils.getEntityManager();
         ReserveDao reserveDao = new ReserveDao(entityManager);
 
@@ -57,8 +55,6 @@ public class RecordEdit {
             reserve.setPaymentMethod(dataToUpdate.get(3));
 
             reserveDao.update(reserve);
-
-            System.out.println(reserve);
 
             entityManager.getTransaction().commit();
 

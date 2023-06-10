@@ -25,7 +25,7 @@ public class DeletingReserve {
         reserve = guestToSearch.getReserve(2);
 
         try{
-            reserveDao.deleteReserve(reserve.getId());
+            reserveDao.deleteReserveById(reserve.getId());
 
         }catch (Exception e){
             System.out.println("reserve wasn't found");

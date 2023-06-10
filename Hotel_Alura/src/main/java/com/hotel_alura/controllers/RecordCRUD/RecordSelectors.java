@@ -1,4 +1,4 @@
-package com.hotel_alura.controllers;
+package com.hotel_alura.controllers.RecordCRUD;
 
 import com.hotel_alura.models.enums.SearchOptions;
 
@@ -36,10 +36,23 @@ public class RecordSelectors {
             return;
             }
         }
-
         throw new NoSuchFieldException();
+    }
 
+    public static void deleteSelector(String enumValue, String refToDelete) throws NoSuchFieldException, IllegalAccessException{
 
+        for (SearchOptions option : SearchOptions.values()) {
+            Field stringValueField = SearchOptions.class.getDeclaredField("tabOption");
+            stringValueField.setAccessible(true);
+
+            String enumStringValue = (String) stringValueField.get(option);
+
+            if (enumValue.equals(enumStringValue)) {
+                option.deleting( refToDelete);
+                return;
+            }
+        }
+        throw new NoSuchFieldException();
     }
 
 

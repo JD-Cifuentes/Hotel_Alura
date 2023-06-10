@@ -49,7 +49,7 @@ public class Reserve {
         this.checkOut = checkOut;
     }
 
-    public void setPrice(double price) {
+    public void setPrice() {
         this.price = price;
     }
 

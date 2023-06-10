@@ -1,7 +1,8 @@
 package com.hotel_alura.models.enums;
 
-import com.hotel_alura.controllers.readers.RecordSearch;
-import com.hotel_alura.controllers.updates.RecordEdit;
+import com.hotel_alura.controllers.RecordCRUD.RecordDelete;
+import com.hotel_alura.controllers.RecordCRUD.RecordSearch;
+import com.hotel_alura.controllers.RecordCRUD.RecordEdit;
 
 import java.util.List;
 
@@ -9,23 +10,31 @@ public enum SearchOptions {
     GUEST("Huéspedes") {
         @Override
         public List<String> searching(Long searchParam) {
-            return new RecordSearch()
-                    .searchGuestByDocument(searchParam);
+            return RecordSearch.searchGuestByDocument(searchParam);
         }
         @Override
         public void editing(List<String> dataToUpdate, String refForSearch) {
-           new RecordEdit().updateGuestByDocument(dataToUpdate, refForSearch);
+           RecordEdit.updateGuestByDocument(dataToUpdate, refForSearch);
+        }
+
+        @Override
+        public void deleting(String refToDelete) {
+            RecordDelete.deleteGuestByDocument(refToDelete);
         }
     },
     RESERVE("Reservas") {
         @Override
         public List<String> searching(Long searchParam) {
-            return new RecordSearch()
-                    .searchReserveByReserveId(searchParam);
+            return RecordSearch.searchReserveByReserveId(searchParam);
         }
         @Override
         public void editing(List<String> dataToUpdate, String refForSearch) {
-            new RecordEdit().updateReserveByReserveId(dataToUpdate, refForSearch);
+            RecordEdit.updateReserveByReserveId(dataToUpdate, refForSearch);
+        }
+
+        @Override
+        public void deleting(String refToDelete) {
+            RecordDelete.deleteReserveById(refToDelete);
         }
     };
 
@@ -43,6 +52,7 @@ public enum SearchOptions {
 
     public abstract void editing(List<String> dataToUpdate, String refForSearch);
 
+    public abstract void deleting(String refToDelete);
 
 
 }
