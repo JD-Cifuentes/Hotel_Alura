@@ -5,6 +5,7 @@ import com.hotel_alura.models.enums.PaymentMethods;
 import javax.persistence.*;
 import java.time.Clock;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @SuppressWarnings("all")
 @Entity
@@ -50,7 +51,7 @@ public class Reserve {
     }
 
     public void setPrice() {
-        this.price = price;
+        this.price = ChronoUnit.DAYS.between(checkIn, checkOut);
     }
 
     public void setPaymentMethod(PaymentMethods paymentMethod) {

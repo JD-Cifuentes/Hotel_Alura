@@ -51,8 +51,8 @@ public class RecordEdit {
 
             reserve.setCheckIn(LocalDate.parse(dataToUpdate.get(0)));
             reserve.setCheckOut(LocalDate.parse(dataToUpdate.get(1)));
-            reserve.setPrice(Double.parseDouble(dataToUpdate.get(2)));
-            reserve.setPaymentMethod(dataToUpdate.get(3));
+            reserve.setPrice();
+            reserve.setPaymentMethod(dataToUpdate.get(2));
 
             reserveDao.update(reserve);
 

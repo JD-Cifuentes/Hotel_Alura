@@ -1,7 +1,7 @@
 package com.hotel_alura.views;
 
 import com.hotel_alura.controllers.RecordCRUD.RecordSelectors;
-
+import com.hotel_alura.models.enums.SearchOptions;
 
 import java.awt.*;
 import javax.swing.*;

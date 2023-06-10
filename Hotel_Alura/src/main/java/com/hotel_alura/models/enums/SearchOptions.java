@@ -1,8 +1,8 @@
 package com.hotel_alura.models.enums;
 
 import com.hotel_alura.controllers.RecordCRUD.RecordDelete;
-import com.hotel_alura.controllers.RecordCRUD.RecordSearch;
 import com.hotel_alura.controllers.RecordCRUD.RecordEdit;
+import com.hotel_alura.controllers.RecordCRUD.RecordSearch;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public enum SearchOptions {
         }
         @Override
         public void editing(List<String> dataToUpdate, String refForSearch) {
-           RecordEdit.updateGuestByDocument(dataToUpdate, refForSearch);
+            RecordEdit.updateGuestByDocument(dataToUpdate, refForSearch);
         }
 
         @Override
@@ -56,3 +56,5 @@ public enum SearchOptions {
 
 
 }
+
+
