@@ -1,5 +1,7 @@
 package com.hotel_alura.views;
 
+import com.hotel_alura.models.enums.FontSizes;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
@@ -55,7 +57,7 @@ public class Exito extends JDialog {
 		{
 			JLabel lblNewLabel_1 = new JLabel("Datos guardados satisfactoriamente");
 			lblNewLabel_1.setForeground(new Color (12, 138, 199));
-			lblNewLabel_1.setFont(new Font("Arial", Font.BOLD, 18));
+			lblNewLabel_1.setFont(new Font("Arial", Font.BOLD, FontSizes.MEDIUM.getSize()));
 			lblNewLabel_1.setBounds(27, 122, 322, 21);
 			contentPanel.add(lblNewLabel_1);
 		}

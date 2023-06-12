@@ -1,5 +1,6 @@
 package com.hotel_alura.models.enums;
 
+import javax.swing.*;
 import java.lang.reflect.Field;
 
 public enum PaymentMethods {
@@ -35,6 +36,16 @@ public enum PaymentMethods {
         throw new NoSuchFieldException();
     }
 
+    public static void insertPaymentMethodList(JComboBox jComboBox) throws NoSuchFieldException, IllegalAccessException {
+
+        for (PaymentMethods option : PaymentMethods.values()) {
+            Field stringValueField = PaymentMethods.class.getDeclaredField("paymentOption");
+            stringValueField.setAccessible(true);
+
+            jComboBox.addItem((String) stringValueField.get(option));
+
+        }
+    }
 
 
 }

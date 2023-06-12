@@ -1,7 +1,8 @@
 package com.hotel_alura.views;
 
-import com.hotel_alura.controllers.RecordCRUD.RecordSelectors;
-import com.hotel_alura.models.enums.SearchOptions;
+import com.hotel_alura.controllers.RecordCRUD.QuerySelectors;
+import com.hotel_alura.models.enums.FontSizes;
+import com.hotel_alura.models.enums.QueryOptions;
 
 import java.awt.*;
 import javax.swing.*;
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@SuppressWarnings("serial")
 public class Busqueda extends JFrame {
 
 	private JPanel contentPane;
@@ -68,7 +68,7 @@ public class Busqueda extends JFrame {
 		
 		JLabel lblNewLabel_4 = new JLabel("SISTEMA DE BÚSQUEDA");
 		lblNewLabel_4.setForeground(new Color(12, 138, 199));
-		lblNewLabel_4.setFont(new Font("Roboto Black", Font.BOLD, 24));
+		lblNewLabel_4.setFont(new Font("Roboto Black", Font.BOLD, FontSizes.XLARGE.getSize()));
 		lblNewLabel_4.setBounds(331, 62, 300, 42);
 		contentPane.add(lblNewLabel_4);
 		
@@ -83,7 +83,7 @@ public class Busqueda extends JFrame {
 		
 		tbReservas = new JTable();
 		tbReservas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tbReservas.setFont(new Font("Roboto", Font.PLAIN, 16));
+		tbReservas.setFont(new Font("Roboto", Font.PLAIN, FontSizes.MEDIUM.getSize()));
 		modelo = new DefaultTableModel(){
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -98,13 +98,13 @@ public class Busqueda extends JFrame {
 		modelo.addColumn("Forma de pago");
 		tbReservas.setModel(modelo);
 		JScrollPane scroll_table = new JScrollPane(tbReservas);
-		panel.addTab(SearchOptions.RESERVE.toString(), new ImageIcon(Objects.requireNonNull(Busqueda.class.getResource("/imagenes/reservado.png"))), scroll_table, null);
+		panel.addTab(QueryOptions.RESERVE.toString(), new ImageIcon(Objects.requireNonNull(Busqueda.class.getResource("/imagenes/reservado.png"))), scroll_table, null);
 		scroll_table.setVisible(true);
 
 
 		tbHuespedes = new JTable();
 		tbHuespedes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tbHuespedes.setFont(new Font("Roboto", Font.PLAIN, 16));
+		tbHuespedes.setFont(new Font("Roboto", Font.PLAIN, FontSizes.MEDIUM.getSize()));
 		modeloHuesped = new DefaultTableModel(){
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -120,7 +120,7 @@ public class Busqueda extends JFrame {
 		modeloHuesped.addColumn("Número de reserva");
 		tbHuespedes.setModel(modeloHuesped);
 		JScrollPane scroll_tableHuespedes = new JScrollPane(tbHuespedes);
-		panel.addTab(SearchOptions.GUEST.toString(), new ImageIcon(Objects.requireNonNull(Busqueda.class.getResource("/imagenes/pessoas.png"))), scroll_tableHuespedes, null);
+		panel.addTab(QueryOptions.GUEST.toString(), new ImageIcon(Objects.requireNonNull(Busqueda.class.getResource("/imagenes/pessoas.png"))), scroll_tableHuespedes, null);
 		scroll_tableHuespedes.setVisible(true);
 
 		JLabel lblNewLabel_2 = new JLabel("");
@@ -173,7 +173,7 @@ public class Busqueda extends JFrame {
 		
 		labelAtras = new JLabel("<");
 		labelAtras.setHorizontalAlignment(SwingConstants.CENTER);
-		labelAtras.setFont(new Font("Roboto", Font.PLAIN, 23));
+		labelAtras.setFont(new Font("Roboto", Font.PLAIN, FontSizes.XLARGE.getSize()));
 		labelAtras.setBounds(0, 0, 53, 36);
 		btnAtras.add(labelAtras);
 		
@@ -204,7 +204,7 @@ public class Busqueda extends JFrame {
 		labelExit = new JLabel("X");
 		labelExit.setHorizontalAlignment(SwingConstants.CENTER);
 		labelExit.setForeground(Color.BLACK);
-		labelExit.setFont(new Font("Roboto", Font.PLAIN, 18));
+		labelExit.setFont(new Font("Roboto", Font.PLAIN, FontSizes.MEDIUM.getSize()));
 		labelExit.setBounds(0, 0, 53, 36);
 		btnexit.add(labelExit);
 
@@ -244,7 +244,7 @@ public class Busqueda extends JFrame {
 		formatInfo.setAlignmentY(1);
 		formatInfo.setForeground(Color.BLACK);
 		formatInfo.setBackground(Color.LIGHT_GRAY);
-		formatInfo.setFont(new Font("Roboto", Font.PLAIN, 11));
+		formatInfo.setFont(new Font("Roboto", Font.PLAIN, FontSizes.SMALL.getSize()));
 		formatInfo.setOpaque(true);
 		formatInfo.setVisible(false);
 		formatInfo.setBounds(0, 0, 200, 100);
@@ -296,7 +296,7 @@ public class Busqueda extends JFrame {
 		btnBuscar.add(lblBuscar);
 		lblBuscar.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBuscar.setForeground(Color.WHITE);
-		lblBuscar.setFont(new Font("Roboto", Font.PLAIN, 18));
+		lblBuscar.setFont(new Font("Roboto", Font.PLAIN, FontSizes.LARGE.getSize()));
 		
 		JPanel btnEditar = new JPanel();
 		btnEditar.addMouseListener(new MouseAdapter() {
@@ -322,7 +322,7 @@ public class Busqueda extends JFrame {
 						}
 					}
 					try{
-						RecordSelectors.editSelector(panel.getTitleAt(panel.getSelectedIndex()), dataToUpdate, refForSearch);
+						QuerySelectors.editSelector(panel.getTitleAt(panel.getSelectedIndex()), dataToUpdate, refForSearch);
 
 					}catch (Exception exception){
 						JOptionPane.showMessageDialog(
@@ -348,7 +348,7 @@ public class Busqueda extends JFrame {
 		JLabel lblEditar = new JLabel("EDITAR");
 		lblEditar.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEditar.setForeground(Color.WHITE);
-		lblEditar.setFont(new Font("Roboto", Font.PLAIN, 18));
+		lblEditar.setFont(new Font("Roboto", Font.PLAIN, FontSizes.LARGE.getSize()));
 		lblEditar.setBounds(0, 0, 122, 35);
 		btnEditar.add(lblEditar);
 		
@@ -372,7 +372,7 @@ public class Busqueda extends JFrame {
 								JOptionPane.YES_NO_OPTION);
 
 						if (option == JOptionPane.YES_OPTION){
-							RecordSelectors.deleteSelector(panel.getTitleAt(panel.getSelectedIndex()), refToDelete);
+							QuerySelectors.deleteSelector(panel.getTitleAt(panel.getSelectedIndex()), refToDelete);
 							DefaultTableModel defaultModel = (DefaultTableModel) selectedTable.getModel();
 							defaultModel.setRowCount(0);
 							JOptionPane.showMessageDialog(
@@ -404,7 +404,7 @@ public class Busqueda extends JFrame {
 		JLabel lblEliminar = new JLabel("ELIMINAR");
 		lblEliminar.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEliminar.setForeground(Color.WHITE);
-		lblEliminar.setFont(new Font("Roboto", Font.PLAIN, 18));
+		lblEliminar.setFont(new Font("Roboto", Font.PLAIN, FontSizes.LARGE.getSize()));
 		lblEliminar.setBounds(0, 0, 122, 35);
 		btnEliminar.add(lblEliminar);
 		setResizable(false);
@@ -436,7 +436,7 @@ public class Busqueda extends JFrame {
 
 	private void searchAndRenderTable(JTabbedPane panel){
 		try{
-			List<String> readQuery = RecordSelectors
+			List<String> readQuery = QuerySelectors
 					.searchSelector(
 							panel.getTitleAt(panel.getSelectedIndex()),
 							Long.parseLong(txtBuscar.getText())

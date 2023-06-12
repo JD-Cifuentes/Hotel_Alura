@@ -1,5 +1,6 @@
 package com.hotel_alura.views;
 
+import com.hotel_alura.models.enums.FontSizes;
 import utils.JPAutils;
 
 import java.awt.EventQueue;
@@ -112,7 +113,7 @@ public class Login extends JFrame {
 		labelExit.setBounds(0, 0, 53, 36);
 		btnexit.add(labelExit);
 		labelExit.setForeground(SystemColor.text);
-		labelExit.setFont(new Font("Roboto", Font.PLAIN, 18));
+		labelExit.setFont(new Font("Roboto", Font.PLAIN, FontSizes.LARGE.getSize()));
 		labelExit.setHorizontalAlignment(SwingConstants.CENTER);		
 		
 		txtUsuario = new JTextField();
@@ -129,7 +130,7 @@ public class Login extends JFrame {
 			        }
 			}
 		});
-		txtUsuario.setFont(new Font("Roboto", Font.PLAIN, 16));
+		txtUsuario.setFont(new Font("Roboto", Font.PLAIN, FontSizes.MEDIUM.getSize()));
 		txtUsuario.setText("Ingrese su nombre de usuario");
 		txtUsuario.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		txtUsuario.setForeground(SystemColor.activeCaptionBorder);
@@ -144,7 +145,7 @@ public class Login extends JFrame {
 		
 		JLabel labelTitulo = new JLabel("INICIAR SESIÓN");
 		labelTitulo.setForeground(SystemColor.textHighlight);
-		labelTitulo.setFont(new Font("Roboto Black", Font.PLAIN, 26));
+		labelTitulo.setFont(new Font("Roboto Black", Font.PLAIN, FontSizes.XLARGE.getSize()));
 		labelTitulo.setBounds(65, 149, 202, 26);
 		panel.add(labelTitulo);
 		
@@ -169,20 +170,20 @@ public class Login extends JFrame {
 			}
 		});
 		txtContrasena.setForeground(SystemColor.activeCaptionBorder);
-		txtContrasena.setFont(new Font("Roboto", Font.PLAIN, 16));
+		txtContrasena.setFont(new Font("Roboto", Font.PLAIN, FontSizes.MEDIUM.getSize()));
 		txtContrasena.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		txtContrasena.setBounds(65, 353, 324, 32);
 		panel.add(txtContrasena);
 		
 		JLabel LabelUsuario = new JLabel("USUARIO");
 		LabelUsuario.setForeground(SystemColor.textInactiveText);
-		LabelUsuario.setFont(new Font("Roboto Black", Font.PLAIN, 20));
+		LabelUsuario.setFont(new Font("Roboto Black", Font.PLAIN, FontSizes.LARGE.getSize()));
 		LabelUsuario.setBounds(65, 219, 107, 26);
 		panel.add(LabelUsuario);
 		
 		JLabel lblContrasea = new JLabel("CONTRASEÑA");
 		lblContrasea.setForeground(SystemColor.textInactiveText);
-		lblContrasea.setFont(new Font("Roboto Black", Font.PLAIN, 20));
+		lblContrasea.setFont(new Font("Roboto Black", Font.PLAIN, FontSizes.LARGE.getSize()));
 		lblContrasea.setBounds(65, 316, 140, 26);
 		panel.add(lblContrasea);
 		
@@ -213,7 +214,7 @@ public class Login extends JFrame {
 		btnLogin.add(lblNewLabel);
 		lblNewLabel.setForeground(SystemColor.controlLtHighlight);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+		lblNewLabel.setFont(new Font("Roboto", Font.PLAIN, FontSizes.LARGE.getSize()));
 		
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);

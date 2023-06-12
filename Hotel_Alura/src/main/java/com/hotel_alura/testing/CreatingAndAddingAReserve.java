@@ -16,7 +16,12 @@ public class CreatingAndAddingAReserve {
         Guest guestToSearch = new Guest();
 
         LocalDate checkInDate = LocalDate.of(2021,6,2);
-        Reserve newReserve = new Reserve(checkInDate, checkInDate.plusDays(4),4*10000, PaymentMethods.CASH);
+        Reserve newReserve = null;
+        try {
+            newReserve = new Reserve(checkInDate, checkInDate.plusDays(4), PaymentMethods.CASH.toString());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
         EntityManager entityManager = JPAutils.getEntityManager();
 
         GuestsDao guestsDao = new GuestsDao(entityManager);

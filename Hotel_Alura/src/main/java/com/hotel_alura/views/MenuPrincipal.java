@@ -1,5 +1,7 @@
 package com.hotel_alura.views;
 
+import com.hotel_alura.models.enums.FontSizes;
+
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -82,7 +84,7 @@ public class MenuPrincipal extends JFrame {
 		int xPositionLblCopyR = (panel.getWidth()-lblCopyR.getText().length()*7)/2;
 		lblCopyR.setBounds(xPositionLblCopyR, 11, panel.getWidth(), 19);
 		lblCopyR.setForeground(new Color(240, 248, 255));
-		lblCopyR.setFont(new Font("Roboto", Font.PLAIN, 16));
+		lblCopyR.setFont(new Font("Roboto", Font.PLAIN, FontSizes.MEDIUM.getSize()));
 		panel_1.add(lblCopyR);
 		
 		//Barra para controlar la ventana 
@@ -133,7 +135,7 @@ public class MenuPrincipal extends JFrame {
 		labelExit.setBounds(0, 0, 53, 36);
 		btnexit.add(labelExit);
 		labelExit.setHorizontalAlignment(SwingConstants.CENTER);
-		labelExit.setFont(new Font("Roboto", Font.PLAIN, 18));
+		labelExit.setFont(new Font("Roboto", Font.PLAIN, FontSizes.LARGE.getSize()));
 		
 		//Botón Login
 		JPanel btnLogin = new JPanel(); 
@@ -165,7 +167,7 @@ public class MenuPrincipal extends JFrame {
 		panel.add(lblTitulo);
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setForeground(SystemColor.textHighlight);
-		lblTitulo.setFont(new Font("Roboto Light", Font.PLAIN, 20));
+		lblTitulo.setFont(new Font("Roboto Light", Font.PLAIN, FontSizes.LARGE.getSize()));
 	}
 	
 	//Código que permite movimentar a janela pela tela seguindo a posição de "x" e "y"	

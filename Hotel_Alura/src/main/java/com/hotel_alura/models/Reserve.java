@@ -19,6 +19,8 @@ public class Reserve {
     private LocalDate checkOut;
     private double price;
 
+    private static final double standarRoomValue = 20000;
+
     @Enumerated(EnumType.STRING)
     private PaymentMethods paymentMethod;
     @ManyToOne(optional = false)
@@ -29,12 +31,12 @@ public class Reserve {
     public Reserve() {
     }
 
-    public Reserve(LocalDate checkIn, LocalDate checkOut, double price, PaymentMethods paymentMethod) {
+    public Reserve(LocalDate checkIn, LocalDate checkOut, String paymentMethod) throws NoSuchFieldException, IllegalAccessException {
         this.registerDate = LocalDate.now(Clock.systemUTC());
         this.checkIn = checkIn;
         this.checkOut = checkOut;
-        this.price = price;
-        this.paymentMethod = paymentMethod;
+        setPrice();
+        setPaymentMethod(paymentMethod);
     }
 
     @Override
@@ -51,7 +53,7 @@ public class Reserve {
     }
 
     public void setPrice() {
-        this.price = ChronoUnit.DAYS.between(checkIn, checkOut);
+        this.price = ChronoUnit.DAYS.between(checkIn, checkOut)*standarRoomValue;
     }
 
     public void setPaymentMethod(PaymentMethods paymentMethod) {
@@ -91,5 +93,9 @@ public class Reserve {
 
     public Guest getGuest() {
         return guest;
+    }
+
+    public static double getStandarRoomValue() {
+        return standarRoomValue;
     }
 }

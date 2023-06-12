@@ -1,15 +1,20 @@
 package com.hotel_alura.models.enums;
 
+import com.hotel_alura.controllers.RecordCRUD.RecordCreate;
 import com.hotel_alura.controllers.RecordCRUD.RecordDelete;
 import com.hotel_alura.controllers.RecordCRUD.RecordEdit;
 import com.hotel_alura.controllers.RecordCRUD.RecordSearch;
 
 import java.util.List;
 
-public enum SearchOptions {
+public enum QueryOptions {
     GUEST("Huéspedes") {
         @Override
-        public List<String> searching(Long searchParam) {
+        public void creating(List<String> dataToCreate, long Document) {
+           //todo
+        }
+        @Override
+        public List<String> searching(long searchParam) {
             return RecordSearch.searchGuestByDocument(searchParam);
         }
         @Override
@@ -24,7 +29,11 @@ public enum SearchOptions {
     },
     RESERVE("Reservas") {
         @Override
-        public List<String> searching(Long searchParam) {
+        public void creating(List<String> dataToCreate, long document) throws NoSuchFieldException, IllegalAccessException {
+            RecordCreate.createReserve(dataToCreate, document);
+        }
+        @Override
+        public List<String> searching(long searchParam) {
             return RecordSearch.searchReserveByReserveId(searchParam);
         }
         @Override
@@ -39,7 +48,7 @@ public enum SearchOptions {
     };
 
     private final String tabOption;
-    SearchOptions(String tabOption) {
+    QueryOptions(String tabOption) {
         this.tabOption = tabOption;
     }
 
@@ -48,11 +57,12 @@ public enum SearchOptions {
         return tabOption;
     }
 
-    public abstract List<String> searching(Long searchParam);
+    public abstract List<String> searching(long searchParam);
 
     public abstract void editing(List<String> dataToUpdate, String refForSearch);
 
     public abstract void deleting(String refToDelete);
+    public abstract void creating(List<String> dataToCreate, long Document) throws NoSuchFieldException, IllegalAccessException;
 
 
 }

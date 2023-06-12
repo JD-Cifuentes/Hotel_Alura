@@ -1,6 +1,8 @@
 package com.hotel_alura.models;
 
 
+import com.hotel_alura.models.enums.JsonMaps;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -54,7 +56,15 @@ public class Guest {
     }
 
     public void setNationality(String nationality) {
-        this.nationality = nationality;
+        for (ComboBoxKeyValue nationIterator :
+                JsonMaps.NATION.getJsonList()) {
+            if (nationIterator.getNationality().equals(nationality)){
+                this.nationality = nationality;
+                return;
+            }
+        }
+        throw new RuntimeException("Nacionalidad no encontrada en la lista");
+
     }
 
     public void setTelephoneNum(long telephoneNum) {
