@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class CreatingGuest {
     public static void main(String[] args) {
 
-        Guest guest_1 = new Guest(125344, "Vash", "Stampede", LocalDate.of(1990,12,25), "Colombia", 3165234987L);
+        Guest guest_1 = new Guest(125344, "Vash", "Stampede", LocalDate.of(1990,12,25), 3165234987L,"colombiana");
         EntityManager entityManager = JPAutils.getEntityManager();
         GuestsDao guestsDao = new GuestsDao(entityManager);
 

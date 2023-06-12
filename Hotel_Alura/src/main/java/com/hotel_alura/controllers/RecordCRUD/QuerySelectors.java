@@ -7,12 +7,12 @@ import java.util.List;
 
 public class QuerySelectors {
 
-    public static void createSelector(String enumValue, long id ,List<String> dataToCreate) throws NoSuchFieldException, IllegalAccessException{
+    public static void createSelector(String enumValue, long document ,List<String> dataToCreate) throws NoSuchFieldException, IllegalAccessException{
 
         QueryOptions option = isValidEntity(enumValue);
 
-        if (option != null && !(QueryOptions.GUEST.searching(id).isEmpty())) {
-            option.creating(dataToCreate, id);
+        if (option != null) {
+            option.creating(dataToCreate, document);
             return;
         }
         throw new NoSuchFieldException();

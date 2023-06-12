@@ -21,6 +21,11 @@ public class GuestsDao {
         return entityManager.createQuery(jpql,Guest.class).setParameter("guestDocument", guestDocument).getSingleResult();
     }
 
+    public long verifyGuestExistenceByDocument(long guestDocument){
+        String jpql =" SELECT COUNT(G) FROM Guest G WHERE G.document = :guestDocument ";
+        return  entityManager.createQuery(jpql,Long.class).setParameter("guestDocument", guestDocument).getSingleResult();
+    }
+
     public void update(Guest guest){
         this.entityManager.merge(guest);
     }

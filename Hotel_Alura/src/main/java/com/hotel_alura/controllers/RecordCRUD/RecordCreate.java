@@ -3,24 +3,38 @@ package com.hotel_alura.controllers.RecordCRUD;
 import com.hotel_alura.models.Guest;
 import com.hotel_alura.models.Reserve;
 import com.hotel_alura.models.dao.GuestsDao;
-import com.hotel_alura.models.dao.ReserveDao;
 import utils.JPAutils;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import java.time.LocalDate;
 import java.util.List;
 
 public class RecordCreate {
-    public static void createGuest(List<String> dataToCreate, String refForSearch) {
-        //todo
-        Guest guest;
+    public static void createGuest(List<String> dataToCreate, long document) throws NoSuchFieldException, IllegalAccessException {
+
+        Guest guest = new Guest(
+                document,
+                dataToCreate.get(0),
+                dataToCreate.get(1),
+                LocalDate.parse(dataToCreate.get(2)),
+                Long.parseLong(dataToCreate.get(3)),
+                dataToCreate.get(4)
+        );
         EntityManager entityManager = JPAutils.getEntityManager();
-        GuestsDao guestsDao = new GuestsDao(entityManager);
+        GuestsDao guestDao = new GuestsDao(entityManager);
+
         try {
             entityManager.getTransaction().begin();
 
+            if (guestDao.verifyGuestExistenceByDocument(document) == 0){
+                guestDao.create(guest);
+            }else {
+                throw new RuntimeException("guest already exist");
+            }
 
             entityManager.getTransaction().commit();
+
 
         } catch (Exception e) {
             System.out.println("cannot finish operation\n" + e);
@@ -44,10 +58,14 @@ public class RecordCreate {
         try{
             entityManager.getTransaction().begin();
 
-            guestToSearch = guestDao.readGuestByDocument(document);
-            newReserve.setGuest(guestToSearch);
-            guestToSearch.addReserve(newReserve);
-            guestDao.update(guestToSearch);
+            if (guestDao.verifyGuestExistenceByDocument(document) > 0){
+                guestToSearch = guestDao.readGuestByDocument(document);
+                newReserve.setGuest(guestToSearch);
+                guestToSearch.addReserve(newReserve);
+                guestDao.update(guestToSearch);
+            }else {
+                throw new RuntimeException("guest wasn´t found");
+            }
 
             entityManager.getTransaction().commit();
 
@@ -57,4 +75,6 @@ public class RecordCreate {
             throw new RuntimeException(e);
         }
     }
+
+
 }

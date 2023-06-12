@@ -27,14 +27,15 @@ public class Guest {
     public Guest() {
     }
 
-    public Guest(long document, String name, String lastName, LocalDate birthDate, String nationality, long telephoneNum) {
+    public Guest(long document, String name, String lastName, LocalDate birthDate, long telephoneNum,String nationality) {
 
         this.document = document;
         this.name = name;
         this.lastName = lastName;
         this.birthDate = birthDate;
-        this.nationality = nationality;
         this.telephoneNum = telephoneNum;
+        setNationality(nationality);
+
     }
 
     @Override

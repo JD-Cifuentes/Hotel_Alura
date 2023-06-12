@@ -10,8 +10,8 @@ import java.util.List;
 public enum QueryOptions {
     GUEST("Huéspedes") {
         @Override
-        public void creating(List<String> dataToCreate, long Document) {
-           //todo
+        public void creating(List<String> dataToCreate, long document) throws NoSuchFieldException, IllegalAccessException {
+            RecordCreate.createGuest(dataToCreate, document);
         }
         @Override
         public List<String> searching(long searchParam) {

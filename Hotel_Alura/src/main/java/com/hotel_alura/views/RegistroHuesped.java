@@ -1,29 +1,33 @@
 package com.hotel_alura.views;
 
 import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
 import java.awt.Color;
 
+import com.hotel_alura.controllers.RecordCRUD.QuerySelectors;
 import com.hotel_alura.models.enums.FontSizes;
+import com.hotel_alura.models.enums.QueryOptions;
 import com.hotel_alura.views.components_instancy_tools.InitComboBoxes;
 import com.hotel_alura.models.enums.JsonMaps;
+import com.hotel_alura.views.components_instancy_tools.IntOnlyKeyListener;
+import com.hotel_alura.views.components_instancy_tools.LetterOnlyKeyListener;
 import com.toedter.calendar.JDateChooser;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
+
 import java.awt.Font;
-import javax.swing.ImageIcon;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.Format;
 import java.awt.Toolkit;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import javax.swing.SwingConstants;
-import javax.swing.JSeparator;
 
 @SuppressWarnings("serial")
 public class RegistroHuesped extends JFrame {
@@ -37,6 +41,8 @@ public class RegistroHuesped extends JFrame {
 	private JComboBox<Format> txtNacionalidad;
 	private JLabel labelExit;
 	private JLabel labelAtras;
+
+	private LocalDate birthDate;
 
 	private final int SMALL_FONTSIZE = 12;
 	int xMouse, yMouse;
@@ -172,6 +178,7 @@ public class RegistroHuesped extends JFrame {
 		labelExit.setFont(new Font("Roboto", Font.PLAIN, FontSizes.LARGE.getSize()));
 
 		txtNDocumento = new JTextField();
+		txtNDocumento.addKeyListener(new IntOnlyKeyListener(txtNDocumento));
 		txtNDocumento.setFont(new Font("Roboto", Font.PLAIN, FontSizes.MEDIUM.getSize()));
 		txtNDocumento.setBounds(560, 135, 285, 33);
 		txtNDocumento.setColumns(10);
@@ -180,6 +187,7 @@ public class RegistroHuesped extends JFrame {
 		contentPane.add(txtNDocumento);
 
 		txtNombre = new JTextField();
+		txtNombre.addKeyListener(new LetterOnlyKeyListener(txtNombre));
 		txtNombre.setFont(new Font("Roboto", Font.PLAIN, FontSizes.MEDIUM.getSize()));
 		txtNombre.setBounds(560, 204, 285, 33);
 		txtNombre.setBackground(Color.WHITE);
@@ -188,6 +196,7 @@ public class RegistroHuesped extends JFrame {
 		contentPane.add(txtNombre);
 		
 		txtApellido = new JTextField();
+		txtApellido.addKeyListener(new LetterOnlyKeyListener(txtApellido));
 		txtApellido.setFont(new Font("Roboto", Font.PLAIN, FontSizes.MEDIUM.getSize()));
 		txtApellido.setBounds(560, 278, 285, 36);
 		txtApellido.setColumns(10);
@@ -200,9 +209,18 @@ public class RegistroHuesped extends JFrame {
 		txtFechaN.getCalendarButton().setIcon(new ImageIcon(Objects.requireNonNull(RegistroHuesped.class.getResource("/imagenes/icon-reservas.png"))));
 		txtFechaN.getCalendarButton().setBackground(SystemColor.textHighlight);
 		txtFechaN.setDateFormatString("yyyy-MM-dd");
+		txtFechaN.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (txtFechaN.getDate() != null){
+					birthDate = txtFechaN.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				}
+			}
+		});
 		contentPane.add(txtFechaN);
 
 		txtTelefono = new JTextField();
+		txtTelefono.addKeyListener(new IntOnlyKeyListener(txtTelefono));
 		txtTelefono.setFont(new Font("Roboto", Font.PLAIN, FontSizes.MEDIUM.getSize()));
 		txtTelefono.setBounds(560, 424, 285, 33);
 		txtTelefono.setColumns(10);
@@ -304,7 +322,45 @@ public class RegistroHuesped extends JFrame {
 		btnguardar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//todo
+				try{
+
+					if (!(txtNDocumento.getText().isBlank() ||
+							txtNombre.getText().isBlank() ||
+							txtApellido.getText().isBlank() ||
+							birthDate.toString().isBlank() ||
+							txtTelefono.getText().isBlank() ||
+							Objects.requireNonNull(txtNacionalidad.getSelectedItem()).toString().isBlank()
+					)){
+						long document = Long.parseLong(txtNDocumento.getText());
+						List<String> dataToCreate = new ArrayList<>();
+						dataToCreate.add(txtNombre.getText());
+						dataToCreate.add(txtApellido.getText());
+						dataToCreate.add(birthDate.toString());
+						dataToCreate.add(txtTelefono.getText());
+						dataToCreate.add((String) txtNacionalidad.getSelectedItem());
+
+						QuerySelectors.createSelector(QueryOptions.GUEST.toString(), document, dataToCreate);
+
+						Exito dialog = new Exito();
+						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+						dialog.setVisible(true);
+					}else{
+						JOptionPane.showMessageDialog(
+								null,
+								"Revisa que todos los campos estén completos",
+								"Falta completar campos",
+								JOptionPane.ERROR_MESSAGE);
+					}
+
+
+				}catch (Exception exception){
+					JOptionPane.showMessageDialog(
+							null,
+							"No se completó la operación debido a que\n" +
+									"el huésped ya se encuentra creado",
+							"No se logró crear el huésped",
+							JOptionPane.WARNING_MESSAGE);
+				}
 
 			}
 		});
