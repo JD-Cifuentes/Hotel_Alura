@@ -13,9 +13,6 @@ import java.util.List;
 
 public class RecordSearch {
 
-
-
-
     public static List<String> searchGuestByDocument(long searchDocumentParam){
         Guest guest = new Guest();
         EntityManager entityManager = JPAutils.getEntityManager();
@@ -75,7 +72,4 @@ public class RecordSearch {
 
         return reservesRegister;
     }
-
-
-
 }

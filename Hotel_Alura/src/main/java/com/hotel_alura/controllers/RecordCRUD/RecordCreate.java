@@ -6,7 +6,6 @@ import com.hotel_alura.models.dao.GuestsDao;
 import utils.JPAutils;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import java.time.LocalDate;
 import java.util.List;
 

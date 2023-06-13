@@ -1,7 +1,6 @@
 package com.hotel_alura.views;
 
 import com.hotel_alura.controllers.RecordCRUD.QuerySelectors;
-import com.hotel_alura.models.ComboBoxKeyValue;
 import com.hotel_alura.models.Reserve;
 import com.hotel_alura.models.enums.FontSizes;
 import com.hotel_alura.models.enums.PaymentMethods;
@@ -45,25 +44,7 @@ public class ReservasView extends JFrame {
 	private LocalDate CheckInDate;
 	private LocalDate CheckOutDate;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ReservasView frame = new ReservasView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	/**
-	 * Create the frame.
-	 */
 	public ReservasView() {
 		super("Reserva");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ReservasView.class.getResource("/imagenes/aH-40px.png")));
@@ -241,6 +222,8 @@ public class ReservasView extends JFrame {
 		btnAtras.setLayout(null);
 		btnAtras.setBackground(Color.WHITE);
 		btnAtras.setBounds(0, 0, 53, 36);
+
+
 		header.add(btnAtras);
 		
 		labelAtras = new JLabel("<");
@@ -248,7 +231,7 @@ public class ReservasView extends JFrame {
 		btnAtras.add(labelAtras);
 		labelAtras.setHorizontalAlignment(SwingConstants.CENTER);
 		labelAtras.setFont(new Font("Roboto", Font.PLAIN, FontSizes.LARGE.getSize()));
-		
+
 		JLabel lblSiguiente = new JLabel("RESERVAR");
 		lblSiguiente.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSiguiente.setForeground(Color.WHITE);

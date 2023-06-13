@@ -1,35 +1,27 @@
 package com.hotel_alura.views;
 
-import java.awt.EventQueue;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.Color;
-
 import com.hotel_alura.controllers.RecordCRUD.QuerySelectors;
 import com.hotel_alura.models.enums.FontSizes;
+import com.hotel_alura.models.enums.JsonMaps;
 import com.hotel_alura.models.enums.QueryOptions;
 import com.hotel_alura.views.components_instancy_tools.InitComboBoxes;
-import com.hotel_alura.models.enums.JsonMaps;
 import com.hotel_alura.views.components_instancy_tools.IntOnlyKeyListener;
 import com.hotel_alura.views.components_instancy_tools.LetterOnlyKeyListener;
 import com.toedter.calendar.JDateChooser;
 
-import java.awt.Font;
-import java.awt.SystemColor;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.text.Format;
-import java.awt.Toolkit;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@SuppressWarnings("serial")
 public class RegistroHuesped extends JFrame {
 
 	private JPanel contentPane;
@@ -41,31 +33,10 @@ public class RegistroHuesped extends JFrame {
 	private JComboBox<Format> txtNacionalidad;
 	private JLabel labelExit;
 	private JLabel labelAtras;
-
 	private LocalDate birthDate;
-
-	private final int SMALL_FONTSIZE = 12;
 	int xMouse, yMouse;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegistroHuesped frame = new RegistroHuesped();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	/**
-	 * Create the frame.
-	 */
 	public RegistroHuesped() {
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(RegistroHuesped.class.getResource("/imagenes/lOGO-50PX.png")));
@@ -209,12 +180,9 @@ public class RegistroHuesped extends JFrame {
 		txtFechaN.getCalendarButton().setIcon(new ImageIcon(Objects.requireNonNull(RegistroHuesped.class.getResource("/imagenes/icon-reservas.png"))));
 		txtFechaN.getCalendarButton().setBackground(SystemColor.textHighlight);
 		txtFechaN.setDateFormatString("yyyy-MM-dd");
-		txtFechaN.addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (txtFechaN.getDate() != null){
-					birthDate = txtFechaN.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-				}
+		txtFechaN.addPropertyChangeListener(evt -> {
+			if (txtFechaN.getDate() != null){
+				birthDate = txtFechaN.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			}
 		});
 		contentPane.add(txtFechaN);
